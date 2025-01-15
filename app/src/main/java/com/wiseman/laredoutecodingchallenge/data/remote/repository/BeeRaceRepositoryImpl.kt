@@ -1,6 +1,5 @@
 package com.wiseman.laredoutecodingchallenge.data.remote.repository
 
-import android.util.Log
 import arrow.core.Either
 import com.wiseman.currencyconverter.util.coroutine.DispatchProvider
 import com.wiseman.laredoutecodingchallenge.data.remote.mapper.toBee
@@ -31,9 +30,6 @@ class BeeRaceRepositoryImpl @Inject constructor(
         try {
             val getBeeRaceDuration = getBeeDuration().await()
             val getBeeRaceStatus = getBeeStatus().await()
-            Log.i("BeeRaceRepositoryImpl", "getBeeRaceDuration:  ${getBeeRaceDuration.raw()} ---")
-            Log.i("BeeRaceRepositoryImpl", "getBeeRaceStatus: ${getBeeRaceStatus.raw()} ---")
-
             when {
                 getBeeRaceStatus.isSuccessful -> {
                     getBeeRaceStatus.body()?.let { value ->
@@ -59,7 +55,6 @@ class BeeRaceRepositoryImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Log.i("BeeRaceRepositoryImpl", "getRaceData: error $e ---")
             emit(Either.Left(BeeRaceExceptions.ApiError(API_ERROR)))
         }
     }.flowOn(dispatchProvider.io())
