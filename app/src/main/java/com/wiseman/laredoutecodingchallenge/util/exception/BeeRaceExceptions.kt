@@ -2,7 +2,7 @@ package com.wiseman.laredoutecodingchallenge.util.exception
 
 sealed class BeeRaceExceptions {
     data class ApiError(val message: String) : BeeRaceExceptions()
-    data class ReCaptchaError(val captchaUrl:String):BeeRaceExceptions()
+    data class ReCaptchaError(val captchaUrl:String?):BeeRaceExceptions()
 }
 
 

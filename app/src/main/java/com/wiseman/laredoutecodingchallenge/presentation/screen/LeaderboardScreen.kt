@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wiseman.laredoutecodingchallenge.R
@@ -27,6 +28,7 @@ import com.wiseman.laredoutecodingchallenge.domain.model.BeeRaceData
 import com.wiseman.laredoutecodingchallenge.presentation.components.CircleWithImage
 import com.wiseman.laredoutecodingchallenge.presentation.components.PositionAndName
 import com.wiseman.laredoutecodingchallenge.presentation.components.TimerCard
+import com.wiseman.laredoutecodingchallenge.presentation.components.WebViewComponent
 import com.wiseman.laredoutecodingchallenge.ui.theme.LaRedouteCodingChallengeTheme
 import com.wiseman.laredoutecodingchallenge.ui.theme.LocalSpacing
 import com.wiseman.laredoutecodingchallenge.util.state.BeeRaceUiState
@@ -62,8 +64,18 @@ fun HomeScreen(
             }
 
             is BeeRaceUiState.Recaptcha -> {
-                // could not be completed
 
+                beeRaceUiState.reCaptchaUrl?.let {
+                    WebViewComponent(
+                        beeRaceUiState.reCaptchaUrl
+                    )
+                }?:kotlin.run {
+                    Toast.makeText(
+                        LocalContext.current,
+                        stringResource(R.string.something_went_wrong),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

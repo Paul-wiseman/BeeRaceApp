@@ -18,6 +18,9 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -46,7 +49,7 @@ class BeeRaceRepositoryImpl @Inject constructor(
                 }
 
                 getBeeRaceStatus.code() == CAPTCHA_RESPONSE_CODE -> {
-                    val recaptchaUrl = getBeeRaceStatus.message()
+                    val recaptchaUrl = getBeeRaceStatus.extractCaptchaUrl()
                     emit(Either.Left(BeeRaceExceptions.ReCaptchaError(recaptchaUrl)))
                 }
 
@@ -67,7 +70,22 @@ class BeeRaceRepositoryImpl @Inject constructor(
         return coroutineScope { async { beeRaceApiService.getRaceStatus() } }
     }
 
-private companion object {
-    const val CAPTCHA_RESPONSE_CODE = 403
-}
+    fun Response<*>.extractCaptchaUrl(): String? {
+            try {
+                val errorBody = errorBody()?.string()
+                errorBody?.let {
+                    val json = Json.parseToJsonElement(it) as JsonObject
+                    return json["captchaUrl"]?.jsonPrimitive?.content
+                }
+            } catch (e: Exception) {
+                // Handle parsing errors
+                e.printStackTrace()
+            }
+
+        return null
+    }
+
+    private companion object {
+        const val CAPTCHA_RESPONSE_CODE = 403
+    }
 }
