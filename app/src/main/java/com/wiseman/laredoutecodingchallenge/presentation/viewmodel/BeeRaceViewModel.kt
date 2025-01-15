@@ -28,7 +28,7 @@ class BeeRaceViewModel @Inject constructor(
         getBeeRaceData()
     }
 
-    private fun getBeeRaceData() {
+     fun getBeeRaceData() {
         viewModelScope.launch {
 
             repository.getRaceData().collectLatest { data: Either<BeeRaceExceptions, BeeRaceData> ->

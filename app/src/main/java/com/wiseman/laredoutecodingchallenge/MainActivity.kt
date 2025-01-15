@@ -48,9 +48,8 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable<Route.RaceLeaderBoardScreen> { navBackStackEntry: NavBackStackEntry ->
-                            val state = beeRaceViewModel.beeRaceUiState.collectAsState().value
                             HomeScreen(
-                                beeRaceUiState = state
+                                beeRaceViewModel = beeRaceViewModel
                             )
                         }
 

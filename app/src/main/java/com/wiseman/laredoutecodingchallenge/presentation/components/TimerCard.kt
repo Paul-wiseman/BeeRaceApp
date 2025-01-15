@@ -7,11 +7,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,26 +16,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.wiseman.laredoutecodingchallenge.R
 import com.wiseman.laredoutecodingchallenge.ui.theme.LocalSpacing
 import com.wiseman.laredoutecodingchallenge.ui.theme.LocalTextSizes
-import com.wiseman.laredoutecodingchallenge.util.formatTime
-import kotlinx.coroutines.delay
 
 @Composable
 fun TimerCard(
     modifier: Modifier = Modifier,
-    timer: Int,
+    formattedTime: String,
     backgroundColor: Color = Color.Black,
 ) {
-    var remainingTime by remember { mutableIntStateOf(timer) }
-
-    LaunchedEffect(Unit) {
-        while (remainingTime > 0) {
-            delay(1000)
-            remainingTime--
-        }
-    }
     val spacing = LocalSpacing.current
     val textSize = LocalTextSizes.current
-    val formattedTime = formatTime(remainingTime)
     Card(
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         modifier = modifier
@@ -77,6 +61,6 @@ fun TimerCard(
 @Composable
 fun PreviewTimerCard() {
     TimerCard(
-        timer = 5
+        formattedTime = "0.04"
     )
 }
