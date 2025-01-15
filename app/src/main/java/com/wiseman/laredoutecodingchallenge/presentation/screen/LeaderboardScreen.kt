@@ -2,16 +2,20 @@ package com.wiseman.laredoutecodingchallenge.presentation.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -119,11 +123,11 @@ private fun LeaderboardScreen(
                 .fillMaxWidth()
                 .padding(
                     vertical = LocalSpacing.current.spaceLarge,
-                    horizontal = LocalSpacing.current.spaceMedium
+                    horizontal = LocalSpacing.current.spaceLarge
                 )
         ) {
             itemsIndexed(beeList) { index, item ->
-                LeaderboardItem(index, item)
+                LeaderboardItem(index+1, item)
             }
         }
     }
@@ -135,26 +139,29 @@ fun LeaderboardItem(position: Int, bee: Bee) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = spacing.spaceSmall)
     ) {
         CircleWithImage(bee.color?.toComposeColor() ?: Color.Gray)
-        bee.name?.let {
-            PositionAndName(
-                Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(horizontal = spacing.spaceMedium),
-                position, it
-            )
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.weight(1f)
+
+        ) {
+            bee.name?.let {
+                PositionAndName(
+                    Modifier
+                        .padding(horizontal = spacing.spaceMedium),
+                    position, it
+                )
+            }
         }
 
-        if (position <= 2) {
+        if (position <= 3) {
             Image(
-                painter = painterResource(id = medalIcons[position]),
+                painter = painterResource(id = medalIcons[position-1]),
                 contentDescription = "Medal",
                 modifier = Modifier
                     .size(50.dp)
-                    .weight(1f)
-                    .align(Alignment.CenterVertically)
             )
         }
     }

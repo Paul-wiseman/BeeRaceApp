@@ -20,7 +20,7 @@ fun PositionAndName(
     val textSize = LocalTextSizes.current
     Column(modifier = modifier) {
         Text(
-            text = "$position",
+            text = getOrdinalPosition(position),
             style = TextStyle(
                 color = Color.Gray,
                 fontSize = textSize.large,
@@ -36,6 +36,23 @@ fun PositionAndName(
             modifier = Modifier.padding(top = spacing.spaceExtraSmall)
         )
     }
+}
+
+private fun getOrdinalPosition(number: Int): String {
+    if (number <= 0) {
+        return number.toString()
+    }
+
+    val suffix = when (number % 100) {
+        11, 12, 13 -> "th"
+        else -> when (number % 10) {
+            1 -> "st"
+            2 -> "nd"
+            3 -> "rd"
+            else -> "th"
+        }
+    }
+    return "${number}${suffix}"
 }
 
 @Preview(showBackground = true)
