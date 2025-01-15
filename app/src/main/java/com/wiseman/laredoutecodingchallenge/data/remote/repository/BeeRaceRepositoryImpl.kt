@@ -4,7 +4,6 @@ import android.util.Log
 import arrow.core.Either
 import com.wiseman.currencyconverter.util.coroutine.DispatchProvider
 import com.wiseman.laredoutecodingchallenge.data.remote.mapper.toBee
-import com.wiseman.laredoutecodingchallenge.data.remote.model.BeeDto
 import com.wiseman.laredoutecodingchallenge.data.remote.model.RaceDurationDto
 import com.wiseman.laredoutecodingchallenge.data.remote.model.RaceStatusDto
 import com.wiseman.laredoutecodingchallenge.data.remote.service.BeeRaceApiService
@@ -30,9 +29,11 @@ class BeeRaceRepositoryImpl @Inject constructor(
 ) : BeeRaceRepository {
     override suspend fun getRaceData(): Flow<Either<BeeRaceExceptions, BeeRaceData>> = flow {
         try {
+            val getBeeRaceDuration = getBeeDuration().await()
+            val getBeeRaceStatus = getBeeStatus().await()
+            Log.i("BeeRaceRepositoryImpl", "getBeeRaceDuration:  ${getBeeRaceDuration.raw()} ---")
+            Log.i("BeeRaceRepositoryImpl", "getBeeRaceStatus: ${getBeeRaceStatus.raw()} ---")
 
-            val getBeeRaceDuration = getBeeDuration()
-            val getBeeRaceStatus = getBeeStatus()
             when {
                 getBeeRaceStatus.isSuccessful -> {
                     getBeeRaceStatus.body()?.let { value ->
@@ -40,7 +41,7 @@ class BeeRaceRepositoryImpl @Inject constructor(
                             Either.Right(
                                 BeeRaceData(
                                     duration = getBeeRaceDuration.body()?.timeInSeconds ?: 0,
-                                    beeList = value.mapNotNull { it?.toBee() }
+                                    beeList = value.beeDtoList.mapNotNull { it?.toBee() }
 
                                 )
                             )
@@ -58,19 +59,18 @@ class BeeRaceRepositoryImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Log.i("BeeRaceRepositoryImpl", "getBeeRaceDuration: $e ")
+            Log.i("BeeRaceRepositoryImpl", "getRaceData: error $e ---")
             emit(Either.Left(BeeRaceExceptions.ApiError(API_ERROR)))
         }
     }.flowOn(dispatchProvider.io())
 
-    private suspend fun getBeeDuration(): Response<RaceDurationDto> {
-        return beeRaceApiService.getRaceDuration()
+    private suspend fun getBeeDuration(): Deferred<Response<RaceDurationDto>> {
+        return coroutineScope { async { beeRaceApiService.getRaceDuration() } }
     }
 
-
-private suspend fun getBeeStatus(): Response<List<BeeDto?>> {
-    return beeRaceApiService.getRaceStatus()
-}
+    private suspend fun getBeeStatus(): Deferred<Response<RaceStatusDto>> {
+        return coroutineScope { async { beeRaceApiService.getRaceStatus() } }
+    }
 
 private companion object {
     const val CAPTCHA_RESPONSE_CODE = 403

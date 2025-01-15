@@ -63,6 +63,7 @@ fun HomeScreen(
 
             is BeeRaceUiState.Recaptcha -> {
                 // could not be completed
+
             }
         }
     }
@@ -114,7 +115,7 @@ fun LeaderboardItem(position: Int, bee: Bee) {
             )
         }
 
-        if (position <= 3) {
+        if (position <= 2) {
             Image(
                 painter = painterResource(id = medalIcons[position]),
                 contentDescription = "Medal",
