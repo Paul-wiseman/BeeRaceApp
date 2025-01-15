@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -17,7 +16,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.wiseman.laredoutecodingchallenge.presentation.screen.HomeScreen
 import com.wiseman.laredoutecodingchallenge.presentation.screen.StartScreen
 import com.wiseman.laredoutecodingchallenge.presentation.viewmodel.BeeRaceViewModel
@@ -52,8 +50,7 @@ class MainActivity : ComponentActivity() {
                         composable<Route.RaceLeaderBoardScreen> { navBackStackEntry: NavBackStackEntry ->
                             val state = beeRaceViewModel.beeRaceUiState.collectAsState().value
                             HomeScreen(
-                                Modifier.padding(innerPadding),
-                                state
+                                beeRaceUiState = state
                             )
                         }
 

@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -19,13 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.wiseman.laredoutecodingchallenge.R
 import com.wiseman.laredoutecodingchallenge.ui.theme.LocalSpacing
 import com.wiseman.laredoutecodingchallenge.ui.theme.LocalTextSizes
 import com.wiseman.laredoutecodingchallenge.util.formatTime
 import kotlinx.coroutines.delay
-import kotlin.text.toIntOrNull
 
 @Composable
 fun TimerCard(
@@ -51,7 +48,8 @@ fun TimerCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(spacing.spaceMedium),
+                .padding(horizontal = spacing.spaceMedium,
+                    vertical = spacing.spaceLarge),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -78,7 +76,7 @@ fun TimerCard(
 @Preview(showBackground = true)
 @Composable
 fun PreviewTimerCard() {
-//    TimerCard(
-////        timer = "2:00"
-//    )
+    TimerCard(
+        timer = 5
+    )
 }

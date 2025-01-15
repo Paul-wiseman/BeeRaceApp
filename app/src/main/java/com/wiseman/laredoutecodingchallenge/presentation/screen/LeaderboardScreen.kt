@@ -2,7 +2,6 @@ package com.wiseman.laredoutecodingchallenge.presentation.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -86,12 +85,11 @@ private fun LeaderboardScreen(
     modifier: Modifier = Modifier,
     beeRaceData: BeeRaceData
 ) {
+
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.Black)
     ) {
-
         TimerCard(
             timer = beeRaceData.duration
         )
@@ -99,7 +97,8 @@ private fun LeaderboardScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 32.dp)
+                .padding(vertical = LocalSpacing.current.spaceLarge,
+                    horizontal = LocalSpacing.current.spaceMedium)
         ) {
             itemsIndexed(beeRaceData.beeList) { index, item ->
                 LeaderboardItem(index, item)
@@ -116,7 +115,6 @@ fun LeaderboardItem(position: Int, bee: Bee) {
             .fillMaxWidth()
             .padding(vertical = 8.dp),
     ) {
-
         CircleWithImage(bee.color?.toComposeColor() ?: Color.Gray)
         bee.name?.let {
             PositionAndName(
@@ -132,7 +130,7 @@ fun LeaderboardItem(position: Int, bee: Bee) {
                 painter = painterResource(id = medalIcons[position]),
                 contentDescription = "Medal",
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(50.dp)
                     .weight(1f)
                     .align(Alignment.CenterVertically)
             )

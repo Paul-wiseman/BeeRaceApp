@@ -5,8 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,16 +17,16 @@ import com.wiseman.laredoutecodingchallenge.R
 
 @Composable
 fun CircleWithImage(
-    color: Color
+    color: Color,
 ) {
     Box(
         modifier = Modifier
-            .size(150.dp)
+            .size(50.dp)
             .clip(CircleShape)
             .background(color)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.medal_1),
+            painter = painterResource(id = R.drawable.bee),
             contentDescription = null,
             modifier = Modifier.align(Alignment.Center)
         )
