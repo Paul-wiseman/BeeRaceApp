@@ -70,7 +70,7 @@ class BeeRaceRepositoryImpl @Inject constructor(
         return coroutineScope { async { beeRaceApiService.getRaceStatus() } }
     }
 
-    fun Response<*>.extractCaptchaUrl(): String? {
+    private fun Response<*>.extractCaptchaUrl(): String? {
             try {
                 val errorBody = errorBody()?.string()
                 errorBody?.let {
@@ -78,7 +78,6 @@ class BeeRaceRepositoryImpl @Inject constructor(
                     return json["captchaUrl"]?.jsonPrimitive?.content
                 }
             } catch (e: Exception) {
-                // Handle parsing errors
                 e.printStackTrace()
             }
 
